@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "821257436588",
+    "project_id": "fittrackpro-2abbe",
+    "storage_bucket": "fittrackpro-2abbe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821257436588:android:569b536890504aa2e44e09",
+        "android_client_info": {
+          "package_name": "com.example.fit_track_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821257436588-ojbgfpp8pkah8tvjvhs422567h801kd3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcVJzT9zltqc1ruZQr11PLKs3RkYqoS3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821257436588-ojbgfpp8pkah8tvjvhs422567h801kd3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "821257436588-aqjs42c5f9o3si7jl8jan67lfcbpc6uk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fitTrackPro2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

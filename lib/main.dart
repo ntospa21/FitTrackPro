@@ -1,36 +1,31 @@
-import 'package:fit_track_pro/screens/login_screen.dart';
+import 'package:dynamic_path_url_strategy/dynamic_path_url_strategy.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:fit_track_pro/firebase_options.dart';
+import 'package:fit_track_pro/routes/router.dart';
+import 'package:fit_track_pro/screens/login/login_screen.dart';
 import 'package:fit_track_pro/screens/main_menu_screen.dart';
 import 'package:fit_track_pro/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setPathUrlStrategy();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(ProviderScope(child: const MyApp()));
 }
 
-final _router = GoRouter(initialLocation: '/', routes: [
-  GoRoute(
-      name: 'splash',
-      path: '/',
-      builder: (context, state) => const SplashScreen()),
-  GoRoute(
-      path: '/login',
-      name: 'login',
-      builder: (context, state) => const LoginScreen()),
-  GoRoute(
-      path: '/main-menu',
-      name: 'mainMenu',
-      builder: (context, state) => const MainMenuScreen()),
-]);
-
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     return MaterialApp.router(
-      routerConfig: _router,
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
     );
   }
 }

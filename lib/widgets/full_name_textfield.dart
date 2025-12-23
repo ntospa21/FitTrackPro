@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class EmailTextField extends StatelessWidget {
+class FullNameTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final bool enabled;
 
-  const EmailTextField({
+  const FullNameTextField({
     super.key,
     required this.controller,
     this.validator,
@@ -23,26 +23,19 @@ class EmailTextField extends StatelessWidget {
       validator: validator ??
           (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'Please enter your email';
+              return 'Please enter your full name';
             }
-
-            // Regular expression for email validation
-            final emailRegex = RegExp(
-              r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-            );
-
-            if (!emailRegex.hasMatch(value.trim())) {
-              return 'Please enter a valid email address';
+            if (value.trim().length < 2) {
+              return 'Name must be at least 2 characters';
             }
-
             return null;
           },
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.name,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        labelText: 'Email',
-        hintText: 'Enter your email',
-        prefixIcon: const Icon(Icons.email_outlined),
+        labelText: 'Full Name',
+        hintText: 'Enter your full name',
+        prefixIcon: const Icon(Icons.person_outline),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -57,10 +50,6 @@ class EmailTextField extends StatelessWidget {
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Colors.red),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
         filled: true,
         fillColor: enabled ? Colors.white : Colors.grey.shade100,

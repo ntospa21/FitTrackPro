@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>821257436588-aqjs42c5f9o3si7jl8jan67lfcbpc6uk.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.821257436588-aqjs42c5f9o3si7jl8jan67lfcbpc6uk</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBnYpgEcmx2ih9EV3nRGSVw5sraUbWSpqw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>821257436588</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.fitTrackPro2</string>
+	<key>PROJECT_ID</key>
+	<string>fittrackpro-2abbe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fittrackpro-2abbe.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:821257436588:ios:a2cd8c65e721d32ae44e09</string>
+</dict>
+</plist>
