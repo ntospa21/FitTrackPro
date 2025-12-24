@@ -7,4 +7,5 @@ class RouteNames {
   static const resetPassword = 'resetPassword';
   static const firebaseError = 'firebaseError';
   static const changePassword = 'changePassword';
+  static const workout = 'workout';
 }

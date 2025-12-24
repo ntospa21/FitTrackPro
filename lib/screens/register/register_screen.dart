@@ -80,6 +80,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              context.pop();
+            },
+          ),
+        ),
         backgroundColor: Colors.grey[100],
         body: SafeArea(
           top: true,
@@ -240,7 +250,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         TextButton(
                           onPressed: () {
                             // TODO: Navigate to login screen
-                            context.go('/login');
+                            context.push('/login');
                           },
                           child: const Text(
                             'Login',

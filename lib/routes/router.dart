@@ -10,6 +10,7 @@ import 'package:fit_track_pro/screens/page_not_found.dart';
 import 'package:fit_track_pro/screens/register/register_screen.dart';
 import 'package:fit_track_pro/screens/splash_screen.dart';
 import 'package:fit_track_pro/screens/verify_email.dart';
+import 'package:fit_track_pro/screens/workout/workout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,10 +24,12 @@ GoRouter router(Ref ref) {
   return GoRouter(
     initialLocation: '/splash',
     redirect: (context, state) {
+      // If auth state is still loading, stay on the current route (so initial /splash will be shown)
       if (authState is AsyncLoading<User?>) {
-        return '/splash';
+        return null;
       }
 
+      // If there's an auth error, go to firebase error screen
       if (authState is AsyncError<User?>) {
         return '/firebaseError';
       }
@@ -38,7 +41,7 @@ GoRouter router(Ref ref) {
           (state.matchedLocation == '/resetPassword');
 
       if (authenticated == false) {
-        return authenticating ? null : '/register';
+        return authenticating ? null : '/login';
       }
 
       // if (!fbAuth.currentUser!.emailVerified) {
@@ -48,9 +51,7 @@ GoRouter router(Ref ref) {
       final verifyingEmail = state.matchedLocation == '/verifyEmail';
       final splashing = state.matchedLocation == '/splash';
 
-      return (authenticating || verifyingEmail || splashing)
-          ? '/main-menu'
-          : null;
+      return (authenticating || verifyingEmail) ? '/main-menu' : null;
     },
     routes: [
       GoRoute(
@@ -94,6 +95,13 @@ GoRouter router(Ref ref) {
         name: RouteNames.verifyEmail,
         builder: (context, state) {
           return const VerifyEmailScreen();
+        },
+      ),
+      GoRoute(
+        path: '/workout',
+        name: RouteNames.workout,
+        builder: (context, state) {
+          return const WorkoutScreen();
         },
       ),
       GoRoute(

@@ -179,7 +179,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        context.go('/register');
+                        context.push('/register');
                       },
                       child: Text(
                         'Register',

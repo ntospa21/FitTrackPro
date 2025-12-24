@@ -1,7 +1,5 @@
-import 'package:fit_track_pro/main.dart';
 import 'package:fit_track_pro/pallete/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,31 +12,80 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late AnimationController _controller;
+  late AnimationController _progressController;
+  late AnimationController _fadeController;
+  late AnimationController _scaleController;
+  late AnimationController _slideController;
+
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
-    // Animation for the linear progress bar
-    _controller = AnimationController(
+
+    // Progress bar animation
+    _progressController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3), // total duration of progress
+      duration: const Duration(seconds: 3),
     )..forward();
 
-    // Navigate to next screen after the progress completes
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        // Example navigation
-        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+    // Fade animation for logo and text
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
+    );
 
-        // context.go('/main-menu');
+    // Scale animation for image
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.elasticOut),
+    );
+
+    // Slide animation for button
+    _slideController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _slideController, curve: Curves.easeOut),
+    );
+
+    // Start animations in sequence
+    _fadeController.forward();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _scaleController.forward();
+    });
+    Future.delayed(const Duration(milliseconds: 600), () {
+      if (mounted) _slideController.forward();
+    });
+
+    // Navigate after progress completes
+    _progressController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        if (mounted) {
+          context.go('/login');
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _progressController.dispose();
+    _fadeController.dispose();
+    _scaleController.dispose();
+    _slideController.dispose();
     super.dispose();
   }
 
@@ -47,77 +94,104 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: true,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              // Title and subtitle at the top
               const SizedBox(height: 40),
-              Text(
-                "FitTrackPro",
-                style: GoogleFonts.roboto(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Monitor your health and workouts",
-                style: GoogleFonts.roboto(
-                  fontSize: 16,
-                  color: Colors.grey,
+
+              // Animated Logo and Title
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.fitness_center,
+                          size: 32,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "FitTrack Pro",
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Track. Achieve. Succeed.",
+                      style: GoogleFonts.roboto(
+                        fontSize: 16,
+                        color: Colors.grey[600],
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
-              // SVG in the middle
+              // Animated Image in the middle
               Expanded(
                 child: Center(
-                  child: Image.asset(
-                    'assets/images/fit_splash.png',
-                    height: 300,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: Image.asset(
+                      'assets/images/fit_splash.png',
+                      height: 280,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
 
-              // Get Started button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go('/login');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    backgroundColor: AppColors.backgroundGrey,
-                  ),
-                  child: Text(
-                    "Get Started",
-                    style: GoogleFonts.roboto(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
+              // Animated progress bar section
+              SlideTransition(
+                position: _slideAnimation,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Column(
+                    children: [
+                      // Animated progress bar
+                      AnimatedBuilder(
+                        animation: _progressController,
+                        builder: (context, child) {
+                          return Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: LinearProgressIndicator(
+                                  value: _progressController.value,
+                                  backgroundColor: Colors.grey[200],
+                                  color: Colors.black,
+                                  minHeight: 6,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                "${(_progressController.value * 100).toInt()}%",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
 
               const SizedBox(height: 16),
-
-              // Linear progress bar at the bottom
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return LinearProgressIndicator(
-                    value: _controller.value,
-                    backgroundColor: Colors.grey.withOpacity(0.3),
-                    color: Theme.of(context).primaryColor,
-                  );
-                },
-              ),
             ],
           ),
         ),

@@ -2,18 +2,14 @@ import 'package:dynamic_path_url_strategy/dynamic_path_url_strategy.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fit_track_pro/firebase_options.dart';
 import 'package:fit_track_pro/routes/router.dart';
-import 'package:fit_track_pro/screens/login/login_screen.dart';
-import 'package:fit_track_pro/screens/main_menu_screen.dart';
-import 'package:fit_track_pro/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
